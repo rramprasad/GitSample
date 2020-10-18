@@ -3,6 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        signingConfig {
+            keyAlias 'RamprasadAlias'
+            keyPassword 'Ramprasad@123'
+            storeFile file('$rootDir/Ramprasad_Signing_Certificate.jks')
+            storePassword 'Ramprasad@123'
+        }
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
@@ -17,9 +26,19 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            debuggable true
             minifyEnabled false
+            shrinkResources false
+            buildConfigField "String", "BASE_URL", "\"https://dev-rramprasad.azurewebsites.net/api/v1.1/\""
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            buildConfigField "String", "BASE_URL", "\"https://dev-rramprasad.azurewebsites.net/api/v1.1/\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.signingConfig
         }
     }
 }
